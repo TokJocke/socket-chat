@@ -6,8 +6,6 @@ export default function ChatInput(props) {
 
     const [inputValue, setValue] = useState("")
 
-    console.log(props)
-
     function updateInputValue(event){
         if(event) {
             setValue(event.target.value)

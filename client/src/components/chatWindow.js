@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-const url = "http://localhost:3000";
 
-export default function ChatWindow(socket) {
 
-    
+export default function ChatWindow(props) {
+
+    const [msg, setMsg] = useState([])
+    const [response, setResponse] = useState()
+
+    useEffect(() => {
+        if(props.socket) {
+            console.log("socket exists, ", props.socket)
+            const newArr = [...msg]
+            props.socket.on("message", (incoming) => {
+                console.log("incoming: ", incoming)
+                if(incoming) {
+                    newArr.push(incoming)
+                    setMsg(newArr)
+                }
+            })        
+        }
+              
+    }, [props.socket]) 
+
+    useEffect(() => {
+        console.log("msgState: ", msg)
+    }, [msg])
+
 
     return (
                                                     
         <div style={chatWindowStyle}>
-{/*             { 
+            { 
                 msg.length?
                     msg.map((item) => {
                         return (
@@ -21,7 +41,7 @@ export default function ChatWindow(socket) {
                     })
                 :
                     "Finns inga meddelande"
-            } */}
+            }
         </div>
     )
 }
