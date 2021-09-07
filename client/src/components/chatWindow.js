@@ -9,12 +9,10 @@ export default function ChatWindow(props) {
     useEffect(() => {
         if(props.socket) {
             console.log("socket exists, ", props.socket)
-            const newArr = [...msg]
             props.socket.on("message", (incoming) => {
                 console.log("incoming: ", incoming)
                 if(incoming) {
-                    newArr.push(incoming)
-                    setMsg(newArr)
+                    setResponse(incoming)
                 }
             })        
         }
@@ -22,9 +20,12 @@ export default function ChatWindow(props) {
     }, [props.socket]) 
 
     useEffect(() => {
-        console.log("msgState: ", msg)
-    }, [msg])
-
+        const newArr = [...msg]
+        if(response) {
+            newArr.push(response)
+            setMsg(newArr)
+        }
+    }, [response])
 
     return (
                                                     
