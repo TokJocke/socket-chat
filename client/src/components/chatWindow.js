@@ -2,31 +2,14 @@ import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 const url = "http://localhost:3000";
 
-export default function ChatWindow() {
+export default function ChatWindow(socket) {
 
-    const [msg, setMsg] = useState([])
-    const [response, setResponse] = useState()
-
-    useEffect(() => {
-        const newArr = [...msg]
-        const socket = socketIOClient(url)
-        socket.on("message", (incoming) => {
-            if(incoming) {
-                console.log(incoming, "in effect")
-                setResponse(incoming)             
-            }
-        })
-            if(response) {
-                newArr.push(response)
-                setMsg(newArr)
-            }          
-              
-    }, [response]) 
+    
 
     return (
                                                     
         <div style={chatWindowStyle}>
-            { 
+{/*             { 
                 msg.length?
                     msg.map((item) => {
                         return (
@@ -38,7 +21,7 @@ export default function ChatWindow() {
                     })
                 :
                     "Finns inga meddelande"
-            }
+            } */}
         </div>
     )
 }
