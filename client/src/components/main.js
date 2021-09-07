@@ -11,16 +11,20 @@ export default class Main extends React.Component {
             name: ""
         }
     }
+
+    
     /* 
         Api som ska integreras: 
         Skämt API,
         datum/namnsdag  
     */
 
+
+
     componentDidMount() {
-        const bla = window.prompt("Write your name")
+        const name = window.prompt("Write your name")
         this.setState({
-            name: bla
+            name: name
         }, () => console.log(this.state.name))
     }
 
