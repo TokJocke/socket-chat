@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
+
 
 
 export default function ChatInput(props) {
@@ -18,10 +18,9 @@ export default function ChatInput(props) {
     }
 
     function sendMessage() {
-       const socket = socketIOClient("http://localhost:3000") 
-       socket.emit("message", {name: props.name, msg: inputValue})
-       setValue("")
-       console.log("message sent")
+        props.socket.emit("message", {name: props.name, msg: inputValue})
+        setValue("")
+        console.log("message sent")
     }
  
     
@@ -30,7 +29,7 @@ export default function ChatInput(props) {
     return (
                                                     
         <div style={chatInputWrap}>
-            <input onChange={updateInputValue} style={inputStyle} placeholder="Write something..." /> {/* props.name ska inte lägga här, bara för test */}
+            <input onChange={updateInputValue} style={inputStyle} placeholder="Write something..." /> 
             <button onClick={() => sendMessage()} style={btnStyle}>
                 Send    
             </button>
