@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-const url = "http://localhost:3000";
 
-export default function ChatWindow() {
+
+export default function ChatWindow(props) {
 
     const [msg, setMsg] = useState([])
     const [response, setResponse] = useState()
 
     useEffect(() => {
-        const newArr = [...msg]
-        const socket = socketIOClient(url)
-        socket.on("message", (incoming) => {
-            if(incoming) {
-                console.log(incoming, "in effect")
-                setResponse(incoming)             
-            }
-        })
-            if(response) {
-                newArr.push(response)
-                setMsg(newArr)
-            }          
+        if(props.socket) {
+            console.log("socket exists, ", props.socket)
+            props.socket.on("message", (incoming) => {
+                console.log("incoming: ", incoming)
+                if(incoming) {
+                    setResponse(incoming)
+                }
+            })        
+        }
               
-    }, [response]) 
+    }, [props.socket]) 
+
+    useEffect(() => {
+        const newArr = [...msg]
+        if(response) {
+            newArr.push(response)
+            setMsg(newArr)
+        }
+    }, [response])
 
     return (
                                                     
