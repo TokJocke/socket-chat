@@ -14,31 +14,90 @@ const io = ioLib(http, {
 })
 const port = 3000
 
-let users = []
+let rooms = []
+
+function createRoom(socket, newRoom) {
+  const roomCheck = rooms.find((room) => room.name === newRoom)
+  if(!roomCheck) {
+    rooms.push({
+      name: newRoom,
+      password: undefined,
+      users: [],
+    })
+    console.log(users)
+  }
+}
+
+
+
+/* function joinRoom(socket, newRoom) {
+  if(!newRoom) {
+    createRoom(socket, "General")
+    const foundRoom = rooms.find((room) => room.name === "General")
+    foundRoom.users.push({
+      id: socket.id,
+      name: socket.name
+    })
+    console.log(rooms[0].users)
+  }
+
+
+}
+ */
 
 io.on("connection", (socket) => {
   console.log("client connected");
-  let rawData = fs.readFileSync("rooms.json")
-  let rooms = JSON.parse(rawData)
   socket.emit("rooms", rooms)
   
+  
+  /* Save user */
+  socket.on('saveUser', (newUser) => { //Borde kanske heta onConnect
+      socket.name = newUser
+  })  
 
-socket.on('saveUser', (newUser) => {
-  users.push({
-    id: socket.id,
-    name: newUser
-  })
-  console.log(users)
-})  
+  
 
-  socket.on('message', (incoming) => {
-   const findUser = users.find((user) => user.id === socket.id)
+
+
+/* Send Message */
+  socket.on('message', (incoming) => {  
     console.log(incoming, "in here")
-    newIncoming = {msg: incoming.msg, name: findUser.name}
+    newIncoming = {msg: incoming.msg, name: socket.name}
     io.emit('message', newIncoming)
   })
+/* Disconnect */
+  socket.on("disconnect", () => {
+    console.log(socket.name, " Disconnected")
+  })
+})
 
-  socket.on('createRoom', (room) => {
+http.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*   socket.on('createRoom', (room) => {
     let rawData = fs.readFileSync("rooms.json")
     let rooms = JSON.parse(rawData)
     rooms.push({
@@ -48,22 +107,4 @@ socket.on('saveUser', (newUser) => {
     })
     fs.writeFileSync("rooms.json", JSON.stringify(rooms))
     io.emit('rooms', rooms)
-  }) 
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    const filterUsers = users.filter((user) => socket.id !== user.id)
-    users = filterUsers
-    console.log(users)
-  })
-})
-
- 
-
-http.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-  })
-
-
-
-
+  })  */
