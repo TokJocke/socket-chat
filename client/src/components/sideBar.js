@@ -2,14 +2,13 @@ import React from "react";
 
 
 
-export default function SideBar() {
-
-
+export default function SideBar(props) {
+    
 
     return (
                                                     
         <div style={sideBarStyle}>
-asdasd
+            {props.children}
         </div>
     )
 }
