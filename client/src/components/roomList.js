@@ -26,9 +26,9 @@ export default function RoomList(props) {
            <div style={listStyle}>  
                 { 
                     roomsArr.length?
-                        roomsArr.map((item) => {
+                        roomsArr.map((item, i) => {
                             return (
-                                <div style={listItem}> 
+                                <div key={i}style={listItem}> 
                                     <p> {item.name} </p>
                                     
                                 </div>

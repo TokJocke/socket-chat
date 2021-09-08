@@ -15,11 +15,11 @@ export default function Main() {
         datum/namnsdag  
     */
 
-    const [name, setName] = useState("")
+  /*   const [name, setName] = useState("") */
     const [socket, setSocket] = useState(null)
 
     useEffect(() => {
-        const name= window.prompt("Write your name")
+        const name = window.prompt("Write your name")
         const socket = socketIOClient(url)     
         setSocket(socket)
         socket.emit("saveUser", name)
@@ -35,7 +35,7 @@ export default function Main() {
                 <ChatWindow socket={socket}> 
                     {/* Skriv ut meddelanden */}
                 </ChatWindow>
-                <ChatInput name={name} socket={socket}/>
+                <ChatInput /* name={name} */ socket={socket}/>
             </Chat>
             <SideBar>
                 <RoomPanel socket={socket}></RoomPanel>
