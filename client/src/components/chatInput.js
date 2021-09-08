@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 
 
@@ -18,7 +18,7 @@ export default function ChatInput(props) {
     }
 
     function sendMessage() {
-        props.socket.emit("message", {name: props.name, msg: inputValue})
+        props.socket.emit("message", { msg: inputValue})
         setValue("")
         console.log("message sent")
     }

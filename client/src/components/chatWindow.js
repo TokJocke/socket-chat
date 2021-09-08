@@ -24,9 +24,12 @@ export default function ChatWindow(props) {
         if(response) {
             newArr.push(response)
             setMsg(newArr)
+            console.log(response)
         }
     }, [response])
 
+    
+    
     return (
                                                     
         <div style={chatWindowStyle}>
