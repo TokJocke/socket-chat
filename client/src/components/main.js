@@ -3,6 +3,8 @@ import Chat from "./chat"
 import SideBar from "./sideBar"
 import ChatWindow from "./chatWindow"
 import ChatInput from "./chatInput";
+import RoomPanel from "./roomPanel";
+import RoomList from "./roomList";
 import socketIOClient from "socket.io-client";
 const url = "http://localhost:3000";
 
@@ -18,9 +20,9 @@ export default function Main() {
 
     useEffect(() => {
         const name= window.prompt("Write your name")
-        const socket = socketIOClient(url)
-        setName(name)
+        const socket = socketIOClient(url)     
         setSocket(socket)
+        socket.emit("saveUser", name)
         return () => socket.close()
     }, [setSocket])
 
@@ -36,7 +38,8 @@ export default function Main() {
                 <ChatInput name={name} socket={socket}/>
             </Chat>
             <SideBar>
-
+                <RoomPanel socket={socket}></RoomPanel>
+                <RoomList socket={socket}></RoomList>
             </SideBar>
 
         </div>
