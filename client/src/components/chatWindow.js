@@ -19,7 +19,7 @@ export default function ChatWindow(props) {
               
     }, [props.socket]) 
 
-    useEffect(() => {
+    useEffect(() => { /* Testa funktion */
         const newArr = [...msg]
         if(response) {
             newArr.push(response)
@@ -28,16 +28,18 @@ export default function ChatWindow(props) {
         }
     }, [response])
 
-    
+    useEffect(() => {
+        console.log("Lookielookie: ", msg)
+    }, [msg])
     
     return (
                                                     
         <div style={chatWindowStyle}>
             { 
                 msg.length?
-                    msg.map((item) => {
+                    msg.map((item, i) => {
                         return (
-                            <div style={msgStyle}> 
+                            <div key={i} style={msgStyle}> 
                                 <p style={ptag}> {item.name}:  </p>
                                 <p style={ptag}> {item.msg} </p>
                             </div>
