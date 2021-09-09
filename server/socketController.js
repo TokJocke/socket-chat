@@ -35,7 +35,7 @@ export default function socketController(io) {
         createRoom(rooms, room)   
         const foundUser = findUser(rooms, socket)
         if(foundUser) {
-          leaveRoom(rooms, socket)
+          leaveRoom(rooms, socket, foundUser)
           joinRoom(rooms, room, foundUser, socket, io)
           roomCheck(rooms)
         }
@@ -46,7 +46,7 @@ export default function socketController(io) {
         const foundUser = findUser(rooms, socket)
         console.log(findUser(rooms, socket))
         if(foundUser) {
-          leaveRoom(rooms, socket)
+          leaveRoom(rooms, socket, foundUser)
           joinRoom(rooms, room, foundUser, socket, io)
           roomCheck(rooms)
           io.emit("rooms", rooms)  
@@ -57,10 +57,13 @@ export default function socketController(io) {
      
       /* Disconnect */
       socket.on("disconnect", () => {
-        leaveRoom(rooms, socket)
-        roomCheck(rooms)
-        io.emit("rooms", rooms)
-        console.log(socket.name, " Disconnected")
+        const foundUser = findUser(rooms, socket)
+        if(foundUser) {
+          leaveRoom(rooms, socket, foundUser)
+          roomCheck(rooms)
+          io.emit("rooms", rooms)
+          console.log(socket.name, " Disconnected")
+        }
       })
  
  

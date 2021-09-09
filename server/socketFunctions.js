@@ -1,6 +1,3 @@
-//import { Socket } from "socket.io"
-
-
 
 
 export function createRoom(roomArr, roomName, pw ) {   
@@ -16,17 +13,18 @@ export function joinRoom(roomArr, roomName, user, socket, io) {
     if(foundRoom) {
         foundRoom.users.push(user)
         socket.join(roomName)
-        const msg = {msg: " has joined the room(" + roomName + ")" , name: user.name}
+        const msg = {msg: `has joined the room(${roomName})` , name: user.name}
         socket.to(roomName).emit("message", msg)
     }
 }
-
-export function leaveRoom(roomArr, socket) {
-    roomArr.forEach(room => {
+export function leaveRoom(roomArr, socket, user) {
+   roomArr.forEach(room => {
         const filterdUsers = room.users.filter((user) => user.id !== socket.id)
         if(filterdUsers) {
             socket.leave(room.name)
             room.users = filterdUsers
+            const msg = {msg: "has left the room", name: user.name}
+            socket.to(room.name).emit("message", msg)
         }
     }); 
 }
