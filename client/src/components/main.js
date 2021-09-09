@@ -22,7 +22,7 @@ export default function Main() {
         const name = window.prompt("Write your name")
         const socket = socketIOClient(url)     
         setSocket(socket)
-        socket.emit("saveUser", name)
+        socket.emit("onConnect", name)
         return () => socket.close()
     }, [setSocket])
 
