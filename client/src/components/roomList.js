@@ -6,16 +6,14 @@ export default function RoomList(props) {
     
     const [roomsArr, setRooms] = useState([])
 
-     useEffect(() => {
+    useEffect(() => {
         console.log("in effect")
         if(props.socket) {        
         props.socket.on('rooms', (rooms) => {
             console.log("rooms", rooms)
             setRooms(rooms) 
-        })
-        
+        })   
     }
-              
     }, [props.socket])
     
     useEffect(() => {

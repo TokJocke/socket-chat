@@ -22,10 +22,13 @@ export default function ChatWindow(props) {
     useEffect(() => { /* Testa funktion */
         const newArr = [...msg]
         if(response) {
+    
             newArr.push(response)
             setMsg(newArr)
             console.log(response)
-        }
+           
+        } 
+
     }, [response])
 
     useEffect(() => {
