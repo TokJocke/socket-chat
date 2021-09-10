@@ -32,22 +32,24 @@ export default function socketController(io) {
       })
       /* Create room */
       socket.on('createRoom', (room) => {
-        createRoom(rooms, room)   
+        console.log(room, "in create room")
+        createRoom(rooms, room.name, room.pw)   
         const foundUser = findUser(rooms, socket)
         if(foundUser) {
           leaveRoom(rooms, socket, foundUser)
-          joinRoom(rooms, room, foundUser, socket, io)
+          joinRoom(rooms, room.name, foundUser, socket, io, room.pw)
           roomCheck(rooms)
+          console.log(rooms)
         }
         io.emit("rooms", rooms)
       }) 
       /* Join */
       socket.on('join', (room) => {
+        console.log(room, "room in join")
         const foundUser = findUser(rooms, socket)
         console.log(findUser(rooms, socket))
         if(foundUser) {
-          leaveRoom(rooms, socket, foundUser)
-          joinRoom(rooms, room, foundUser, socket, io)
+          joinRoom(rooms, room.name, foundUser, socket, io, room.pw)
           roomCheck(rooms)
           io.emit("rooms", rooms)  
         }

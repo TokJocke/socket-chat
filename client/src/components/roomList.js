@@ -6,6 +6,19 @@ export default function RoomList(props) {
     
     const [roomsArr, setRooms] = useState([])
 
+    function joinRoom(room) {
+        console.log(room)
+        if(room.password) {
+          const pw = window.prompt("Skriv in lösenord")
+          let roomProp = {name: room.name, pw: pw}
+          props.socket.emit("join", roomProp)
+        }
+        else {
+            props.socket.emit("join", {name: room.name, pw: undefined})
+
+        }
+    }
+
     useEffect(() => {
         console.log("in effect")
         if(props.socket) {        
@@ -26,7 +39,7 @@ export default function RoomList(props) {
                     roomsArr.length?
                         roomsArr.map((item, i) => {
                             return (
-                                <div key={i}style={listItem} onClick={() => props.socket.emit("join", item.name) }> 
+                                <div key={i}style={listItem} onClick={() => joinRoom(item) }> 
                                     <p style={roomNameStyle}> {item.name} </p>
                                     <div style={userList}>
                                         users: 
