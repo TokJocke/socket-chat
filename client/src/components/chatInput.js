@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 
@@ -18,13 +18,25 @@ export default function ChatInput(props) {
     }
 
     function sendMessage() {
-        props.socket.emit("message", { msg: inputValue})
-        setValue("")
-        console.log("message sent")
+        const firstLetter = inputValue.substring(-1,1)
+        if(firstLetter === "/") {
+            props.socket.emit("message", {type: "cmd", msg: inputValue})
+            console.log("thats amazing")
+        }
+        else {
+
+            props.socket.emit("message", {type: "msg", msg: inputValue})
+            setValue("")
+            console.log("message sent")
+        }
     }
+
+    useEffect(() => {
+        console.log(inputValue, "in effect input")
+        console.log("first letter= ", inputValue.substring(-1,1))
+    }, [inputValue])
  
     
-
 
     return (
                                                     

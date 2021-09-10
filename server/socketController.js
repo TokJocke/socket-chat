@@ -1,4 +1,5 @@
 import {createRoom, joinRoom, leaveRoom, roomCheck, findUser } from "./socketFunctions.js"
+import { joke, makeReq } from "./apiFuncs.js";
 
 export default function socketController(io) {
     
@@ -6,8 +7,6 @@ export default function socketController(io) {
 
     io.on("connection", (socket) => {
       console.log("client connected");
-     // socket.emit("rooms", rooms)
-      
       
       /* Save user */
       socket.on('onConnect', (newUser) => { //Borde kanske heta onConnect
@@ -25,8 +24,15 @@ export default function socketController(io) {
         rooms.forEach(room => {
           const foundUser = room.users.find((user) => user.id == socket.id)
           if(foundUser) {
-            const msg = {msg: incoming.msg, name: foundUser.name}
-            io.to(room.name).emit('message', msg)
+            if(incoming.type === "cmd") {
+              joke()
+              const msg = {msg: "api goes here", name: foundUser.name, type: incoming.type}
+              io.to(room.name).emit('message', msg)
+            }
+            else {
+              const msg = {msg: incoming.msg, name: foundUser.name, type: incoming.type}
+              io.to(room.name).emit('message', msg)
+            }
           }
         });
       })
