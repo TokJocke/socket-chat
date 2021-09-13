@@ -29,9 +29,6 @@ export default function RoomList(props) {
     }
     }, [props.socket])
     
-    useEffect(() => {
-        console.log(roomsArr, "rooms aRRR ")
-    }, [roomsArr])
 
     return (
            <div style={listStyle}>  

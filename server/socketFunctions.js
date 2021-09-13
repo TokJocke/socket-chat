@@ -15,11 +15,11 @@ export function joinRoom(roomArr, roomName, user, socket, io, pw) {
             leaveRoom(roomArr, socket, user)           
             foundRoom.users.push(user)
             socket.join(roomName)
-            const msg = {msg: `has joined the room(${roomName})` , name: user.name}
+            const msg = {msg: `has joined the room(${roomName})` , name: user.name} //skicka med type
             socket.to(roomName).emit("message", msg)
         }
         else {
-            socket.to(socket.id).emit("message", "wrong password")
+            socket.to(socket.id).emit("message", "wrong password") //funkar ej
         }
     }
 }
@@ -49,7 +49,10 @@ export function findUser(rooms, socket) {
     const findUser = rooms.forEach(index => {
       index.users.find((user) => {
         if(user.id === socket.id) {
-          foundUser = user
+          foundUser = {
+              user: user,
+              room: index
+          }
         }
       })
     })

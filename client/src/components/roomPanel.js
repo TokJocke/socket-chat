@@ -25,7 +25,6 @@ export default function RoomPanel(props) {
         if(pw === "") {
             setPw(undefined)
         }
-        console.log(pw, "in effect")
     }, [pw])
 
 

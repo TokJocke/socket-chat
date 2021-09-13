@@ -1,13 +1,15 @@
 import {createRoom, joinRoom, leaveRoom, roomCheck, findUser } from "./socketFunctions.js"
+import { makeJoke, makeReq, getBored } from "./apiFuncs.js";
 
-export default function socketController(io) {
+
+
+
+export default async function socketController(io) {
     
   let rooms = []
 
     io.on("connection", (socket) => {
       console.log("client connected");
-     // socket.emit("rooms", rooms)
-      
       
       /* Save user */
       socket.on('onConnect', (newUser) => { //Borde kanske heta onConnect
@@ -21,23 +23,34 @@ export default function socketController(io) {
         io.emit("rooms", rooms)
       })  
       /* Send Message */
-      socket.on('message', (incoming) => {  
-        rooms.forEach(room => {
-          const foundUser = room.users.find((user) => user.id == socket.id)
-          if(foundUser) {
-            const msg = {msg: incoming.msg, name: foundUser.name}
-            io.to(room.name).emit('message', msg)
+      socket.on('message', async (incoming) => {  
+         const foundUser = findUser(rooms, socket)
+          if(foundUser.user) {    
+            if(incoming.type === "cmd") {
+              console.log(incoming.msg, "in hererere")
+              if(incoming.msg.toLowerCase().includes("joke")) {
+                const msg = {msg: await makeJoke(incoming.msg), name: foundUser.user.name, type: incoming.type}
+                io.to(foundUser.room.name).emit('message', msg)
+              }
+              else if(incoming.msg.toLowerCase().includes("bored")) {
+                const msg = {msg: await getBored(), name: foundUser.user.name, type: incoming.type}
+                io.to(foundUser.room.name).emit('message', msg)
+              }
+            }
+            else {
+              const msg = {msg: incoming.msg, name: foundUser.user.name, type: incoming.type}
+              io.to(foundUser.room.name).emit('message', msg)
+            }
           }
-        });
       })
       /* Create room */
       socket.on('createRoom', (room) => {
         console.log(room, "in create room")
         createRoom(rooms, room.name, room.pw)   
         const foundUser = findUser(rooms, socket)
-        if(foundUser) {
-          leaveRoom(rooms, socket, foundUser)
-          joinRoom(rooms, room.name, foundUser, socket, io, room.pw)
+        if(foundUser.user) {
+          leaveRoom(rooms, socket, foundUser.user)
+          joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
           roomCheck(rooms)
           console.log(rooms)
         }
@@ -48,8 +61,8 @@ export default function socketController(io) {
         console.log(room, "room in join")
         const foundUser = findUser(rooms, socket)
         console.log(findUser(rooms, socket))
-        if(foundUser) {
-          joinRoom(rooms, room.name, foundUser, socket, io, room.pw)
+        if(foundUser.user) {
+          joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
           roomCheck(rooms)
           io.emit("rooms", rooms)  
         }
