@@ -49,7 +49,10 @@ export function findUser(rooms, socket) {
     const findUser = rooms.forEach(index => {
       index.users.find((user) => {
         if(user.id === socket.id) {
-          foundUser = user
+          foundUser = {
+              user: user,
+              room: index
+          }
         }
       })
     })
