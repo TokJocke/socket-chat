@@ -9,40 +9,72 @@ import socketIOClient from "socket.io-client";
 const url = "http://localhost:3000";
 
 export default function Main() {   
-    /* 
-        Api som ska integreras: 
-        Skämt API,
-        datum/namnsdag  
-    */
 
-  /*   const [name, setName] = useState("") */
     const [socket, setSocket] = useState(null)
+    const [isLogged, setIsLogged] = useState(false)
+    const [inputValue, setValue] = useState("")
 
-    useEffect(() => {
-        const name = window.prompt("Write your name")
-        const socket = socketIOClient(url)     
-        setSocket(socket)
-        socket.emit("onConnect", name)
-        return () => socket.close()
-    }, [setSocket])
+    function enterChat() {
+        if(inputValue.length > 1) {
+            const socket = socketIOClient(url)     
+            setSocket(socket)
+            setIsLogged(true)
+            socket.emit("onConnect", inputValue)
+            return () => socket.close()
+        }
+    }
 
+    function updateInputValue(event){
+        if(event) {
+            setValue(event.target.value)
+        }
+        else {
+            setValue("")
+        }
+    }
 
+    function handleKeyPress(event) {
+        if (event.key === "Enter") {
+            enterChat()
+        }
+    }
    
     return (
-        <div style={mainStyle}>
-            
-            <Chat>
-                <ChatWindow socket={socket}> 
-                    {/* Skriv ut meddelanden */}
-                </ChatWindow>
-                <ChatInput /* name={name} */ socket={socket}/>
-            </Chat>
-            <SideBar>
-                <RoomPanel socket={socket}></RoomPanel>
-                <RoomList socket={socket}></RoomList>
-            </SideBar>
+        isLogged? 
+            <div style={mainStyle}>
+                
+                <Chat>
+                    <ChatWindow socket={socket}> 
+                    </ChatWindow>
+                    <ChatInput /* name={name} */ socket={socket}/>
+                </Chat>
+                <SideBar>
+                    <RoomPanel socket={socket}></RoomPanel>
+                    <RoomList socket={socket}></RoomList>
+                </SideBar>
 
-        </div>
+            </div>
+        :
+            <div style={loggInModal}>
+                <div style={welcomeWrap}>
+                    <h1>Welcome, enter your name to start chatting</h1>
+                    <div style={inputWrap}>
+                        <input 
+                            onChange={updateInputValue} 
+                            placeholder={"Write your name..."} 
+                            style={inputStyle} 
+                            value={inputValue}
+                            onKeyPress={(event) => handleKeyPress(event)}
+                            autoFocus
+                        />
+                        <button 
+                            onClick={() => enterChat()} 
+                            style={btnStyle}>
+                                Enter
+                        </button>
+                    </div>
+                </div>
+            </div>
     )
     
 }
@@ -51,6 +83,38 @@ const mainStyle = {
     display: "flex",
     width: "100%",
     height: "100%",
-    
 }
 
+const loggInModal = {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "black",
+    color: "rgb(230, 230, 230)",
+    alignItems: "center"
+}
+
+const inputStyle = {
+    height: "5vh",
+    width: "100%"
+}
+
+const welcomeWrap = {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    marginTop: "10vh"
+}
+
+const inputWrap = {
+    display: "flex"
+}
+
+const btnStyle = {
+    width: "15%"
+}
