@@ -31,9 +31,6 @@ export default function ChatWindow(props) {
 
     }, [response])
 
-    useEffect(() => {
-        console.log("Lookielookie: ", msg)
-    }, [msg])
     
     return (
                                                     

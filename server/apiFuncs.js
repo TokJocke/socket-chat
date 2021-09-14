@@ -15,9 +15,8 @@ export async function makeReq(url) {
 
 export async function makeJoke(param) {
     const strCopy = param.split('.');
-    console.log("hjellle")
     if(!strCopy[1]) {
-        const joke = await makeReq(`https://v2.jokeapi.dev/joke/any?type=single`) // https://v2.jokeapi.dev/joke/Dark?type=single
+        const joke = await makeReq(`https://v2.jokeapi.dev/joke/Programming,Miscellaneous,Pun,Spooky?blacklistFlags=nsfw,racist,sexist&type=single`) 
         console.log(joke)
         return joke.joke  
     }
