@@ -50,14 +50,20 @@ export default async function socketController(io) {
       })
       /* Create room */
       socket.on('createRoom', (room) => {
-        createRoom(rooms, room.name, room.pw)   
-        const foundUser = findUser(rooms, socket)
-        if(foundUser.user) {
-          leaveRoom(rooms, socket, foundUser.user)
-          joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
-          roomCheck(rooms)
+        const foundRoom = rooms.find((r) => r.name == room.name)
+        if(!foundRoom && room.name !== "") {
+          createRoom(rooms, room.name, room.pw)   
+          const foundUser = findUser(rooms, socket)
+          if(foundUser.user) {
+            leaveRoom(rooms, socket, foundUser.user)
+            joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
+            roomCheck(rooms)
+          }
+          io.emit("rooms", rooms)
         }
-        io.emit("rooms", rooms)
+/*         else {  emit i else funkar inte, duplicerar meddelanden.
+          socket.emit("error", "feel för fan")
+        } */
       }) 
       /* Join */
       socket.on('join', (room) => {

@@ -9,6 +9,11 @@ export default function RoomPanel(props) {
 
     function createRoom() {
         props.socket.emit('createRoom', {name: roomName, pw: pw})
+      
+/*         props.socket.on('error', (errorMsg) => {
+            console.log(errorMsg)
+        }) */
+
     }
 
     function updateRoomName(event){
@@ -27,13 +32,25 @@ export default function RoomPanel(props) {
         }
     }, [pw])
 
+/*     useEffect(() => {
+        console.log("in effect: ", props.socket)
+        if(props.socket) {        
+            props.socket.on('error', (errorMsg) => {
+                console.log(errorMsg)
+            })     
+        }
+    }, [props.socket]) */
+
 
     return (
                                                     
         <div style={panelStyle}>
-            <input onChange={updateRoomName} placeholder="Write something..." /> 
-            <input onChange={updatePw} placeholder="Write something..." /> 
-            <button onClick={() => createRoom()}>Skapa rum</button>
+            <h1>
+                Create Room
+            </h1>
+            <input style={inputStyle}onChange={updateRoomName} placeholder="Room name..." /> 
+            <input style={inputStyle} onChange={updatePw} placeholder="Password..." /> 
+            <button style={btnStyle} onClick={() => createRoom()}>Create</button>
         </div>
     )
 }
@@ -42,5 +59,16 @@ const panelStyle = {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    backgroundColor: "orange"
+    marginBottom: "20px"
+}
+
+const inputStyle = {
+    fontSize: "1.3em",
+}
+
+const btnStyle = {
+    fontSize: "1.5em",
+    backgroundColor: "lightgreen",
+    color: "rgb(230, 230, 230)",
+    cursor: "pointer"
 }

@@ -104,11 +104,15 @@ const chatInputWrap = {
 }
 
 const inputStyle = {
-    width: "90%"
+    width: "90%",
+    backgroundColor: "rgb(230, 230, 230)"
 }
 
 const btnStyle = {
-    width: "10%"
+    width: "10%",
+    backgroundColor: "lightgreen",
+    fontSize: "1.6em",
+    color: "rgb(230, 230, 230)"
 }
 
 const suggestionDiv = {

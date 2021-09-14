@@ -18,5 +18,5 @@ const sideBarStyle = {
     flexDirection: "column",
     width: "20%",
     height: "100%",
-    backgroundColor: "yellow"
+    backgroundColor: "darkgray"
 }

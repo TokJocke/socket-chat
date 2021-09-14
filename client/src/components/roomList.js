@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Loader from "./loader";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
 export default function RoomList(props) {
     
     const [roomsArr, setRooms] = useState([])
@@ -33,7 +35,6 @@ export default function RoomList(props) {
 
     function renderRoomList() {
         let foundUser = findUser(roomsArr, props.socket)
-        console.log(roomsArr)
         return (
             <div style={listStyle}>  
                             { 
@@ -43,14 +44,14 @@ export default function RoomList(props) {
                                             <div key={i}style={listItem} onClick={() => joinRoom(item) }> 
                                                 <p style={roomNameStyle}> {item.name} </p>
                                                 <div style={userList}>
-                                                    users: 
+                                                    <p style={{...roomNameStyle, color: "rgb(230, 230, 230)"}}>users:</p> 
                                                     {   
                                                         item.users.length?
                                                             item.users.map((user) => {
                                                                 if(user.id === foundUser.user.id) {
                                                                     return (
                                                                         <div style={userStatus}>
-                                                                            <p style={currentUser}>{user.name}</p>
+                                                                            <p style={{...currentUser, ...userNameStyle}}>{user.name}</p>
                                                                         </div>
                                                                     )
                                                                 }
@@ -58,15 +59,20 @@ export default function RoomList(props) {
                                                                     if(user.isWriting) {  
                                                                         return (
                                                                             <div style={userStatus}> {/* Fixa loader */}
-                                                                                <p>{user.name} </p>
-                                                                                <p>is writing</p>
+                                                                                <p style={userNameStyle}>{user.name} </p> 
+                                                                                <Loader 
+                                                                                    type="ThreeDots"
+                                                                                    color="white"
+                                                                                    width="40"
+                                                                                    height="100%"
+                                                                                />
                                                                             </div>
                                                                         )
                                                                     }
                                                                     else 
                                                                         return (
                                                                             <div style={userStatus}>
-                                                                                <p>{user.name}</p>
+                                                                                <p style={userNameStyle}>{user.name}</p>
                                                                             </div>
                                                                         )
                                                                 }
@@ -103,21 +109,23 @@ const listStyle = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    backgroundColor: 'grey'
+    backgroundColor: 'darkgray'
 }
 
 const listItem = {
-    border: '1px solid black',
-    cursor: 'pointer'
+    borderBottom: '3px solid white',
+    cursor: 'pointer',
 }
 
 const userList = {
-    backgroundColor: "rgba(230, 230, 230, 0.7)"
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
 }
 
 const roomNameStyle = {
     fontSize: "1.5em",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    
+
 }
 
 const currentUser = {
@@ -125,5 +133,15 @@ const currentUser = {
 }
 
 const userStatus = {
-    display: "flex"
+    display: "flex",
+    alignItems: "center",    
+/*     backgroundColor: "brown",
+    borderRadius: "25px", */
+    border: "1px solid white"
 }
+
+const userNameStyle = {
+    marginRight: "0.5em",
+    color: "rgb(230, 230, 230)"
+}
+

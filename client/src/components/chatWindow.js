@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 
 export default function ChatWindow(props) {
 
     const [msg, setMsg] = useState([])
     const [response, setResponse] = useState()
+    const messagesEndRef = useRef(null)
+
+    function scrollToBottom(div) {
+/*         let shouldScroll = messagesEndRef.current.getBoundingClientRect().bottom
+        let windowHeight = window.innerHeight */
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
 
     useEffect(() => {
         if(props.socket) {
-            console.log("socket exists, ", props.socket)
             props.socket.on("message", (incoming) => {
-                console.log("incoming: ", incoming)
                 if(incoming) {
                     setResponse(incoming)
                 }
@@ -26,15 +31,18 @@ export default function ChatWindow(props) {
             newArr.push(response)
             setMsg(newArr)
             console.log(response)
-           
         } 
 
     }, [response])
 
+    useEffect(() => {
+        scrollToBottom()
+    }, [msg])
+
     
     return (
                                                     
-        <div style={chatWindowStyle}>
+        <div className="noScrollBar" style={chatWindowStyle}>
             { 
                 msg.length?
                     msg.map((item, i) => {
@@ -46,8 +54,10 @@ export default function ChatWindow(props) {
                         )
                     })
                 :
-                    "Finns inga meddelande"
+                "Finns inga meddelande"
             }
+
+            <div ref={messagesEndRef} />
         </div>
     )
 }
@@ -57,7 +67,8 @@ const chatWindowStyle = {
     flexDirection: 'column',
     widht: "100%",
     height: "90%",
-    backgroundColor: "white"
+    backgroundColor: "rgb(230, 230, 230)",
+    overflow: "auto"
 }
 
 const msgStyle = {

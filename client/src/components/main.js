@@ -15,7 +15,7 @@ export default function Main() {
     const [inputValue, setValue] = useState("")
 
     function enterChat() {
-        if(inputValue.length > 1) {
+        if(inputValue.length > 0) {
             const socket = socketIOClient(url)     
             setSocket(socket)
             setIsLogged(true)
@@ -82,7 +82,7 @@ export default function Main() {
 const mainStyle = {
     display: "flex",
     width: "100%",
-    height: "100%",
+    height: "90%",
 }
 
 const loggInModal = {
