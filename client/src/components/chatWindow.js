@@ -57,7 +57,7 @@ export default function ChatWindow(props) {
                 null 
                 : 
                 <button onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })} style={newMsgStyle}>
-                    Nya meddelanden   
+                    Latest  
                     <FontAwesomeIcon icon={faArrowDown} />
                 </button>
               
