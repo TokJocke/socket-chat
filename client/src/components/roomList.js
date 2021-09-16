@@ -7,7 +7,6 @@ export default function RoomList(props) {
     const [roomsArr, setRooms] = useState([])
    
     function joinRoom(room) {
-        console.log(room)
         if(room.password) {
           const pw = window.prompt("Skriv in lösenord")
           let roomProp = {name: room.name, pw: pw}
@@ -94,7 +93,6 @@ export default function RoomList(props) {
     }
 
     useEffect(() => {
-        console.log("in effect: ", props.socket)
         if(props.socket) {        
             props.socket.on('rooms', (rooms) => {
                 setRooms(rooms) 
@@ -159,5 +157,6 @@ const titleWrap = {
     backgroundColor: 'rgb(85, 150, 245)',
     color: "white",
     margin: "0",
-    display: "flex"
+    display: "flex",
+    justifyContent: "center"
 }

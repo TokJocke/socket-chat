@@ -15,20 +15,14 @@ export default function ChatWindow(props) {
     function onScrollEvent() {
         const bottom = Math.abs(parentDivRef.current?.scrollHeight - (parentDivRef.current?.scrollTop + parentDivRef.current?.clientHeight) <= 1);
         if(bottom) {
-            console.log("onScrollEvent: if")
             setIfBottom(true)
             
         }
         else {
-            console.log("onScrollEvent: else")
             setIfBottom(false)
         }
     }
 
-    /* Enbart för console.log */
-    useEffect(() => {
-        console.log(ifBottom)
-    }, [ifBottom])
 
     useEffect(() => {
         if(props.socket) {
@@ -45,7 +39,6 @@ export default function ChatWindow(props) {
         if(response) {
             newArr.push(response)
             setMsg(newArr)
-            console.log(response)
         } 
     }, [response])
 

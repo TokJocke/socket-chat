@@ -11,22 +11,14 @@ export default function RoomPanel(props) {
     function createRoom() {
         setCantCreateMsg(undefined)
         props.socket.emit('createRoom', {name: roomName, pw: pw})
-        props.socket.once('error', (errorMsg) => {
-            setCantCreateMsg(errorMsg)
-            setTimeout(() => {
-                setCantCreateMsg(undefined)
-            }, 5000);
-        })
     }
 
     function updateRoomName(event){
         event? setRoomName(event.target.value) : setRoomName("")
-            console.log(roomName)      
     }
 
     function updatePw(event) {
         event? setPw(event.target.value) : setPw("")     
-        console.log(pw)     
     }
 
     useEffect(() => {
@@ -34,6 +26,16 @@ export default function RoomPanel(props) {
             setPw(undefined)
         }
     }, [pw])
+
+
+    useEffect(() => {
+        props.socket.on('error', (errorMsg) => {
+            setCantCreateMsg(errorMsg)
+            setTimeout(() => {
+                setCantCreateMsg(undefined)
+            }, 5000);
+        })
+    }, [props.socket])
 
     return (
                                                     

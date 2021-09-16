@@ -19,14 +19,16 @@ export function joinRoom(roomArr, roomName, user, socket, io, pw) {
             socket.to(roomName).emit("message", msg)
         }
         else {
-            socket.to(socket.id).emit("message", "wrong password") //funkar ej
+            socket.emit("error", "Wrong password")
+            console.log("else")
         }
     }
 }
 export function leaveRoom(roomArr, socket, user) {
    roomArr.forEach(room => {
         const filterdUsers = room.users.filter((user) => user.id !== socket.id)
-        if(filterdUsers) {
+        const foundUser = findUser(roomArr, socket)
+        if(foundUser) {
             socket.leave(room.name)
             room.users = filterdUsers
             const msg = {msg: "has left the room", name: user.name, type: "notice"}
