@@ -15,7 +15,7 @@ export function joinRoom(roomArr, roomName, user, socket, io, pw) {
             leaveRoom(roomArr, socket, user)           
             foundRoom.users.push(user)
             socket.join(roomName)
-            const msg = {msg: `has joined the room(${roomName})` , name: user.name} //skicka med type
+            const msg = {msg: `has joined the room(${roomName})` , name: user.name, type: "notice"} //skicka med type
             socket.to(roomName).emit("message", msg)
         }
         else {
@@ -29,7 +29,7 @@ export function leaveRoom(roomArr, socket, user) {
         if(filterdUsers) {
             socket.leave(room.name)
             room.users = filterdUsers
-            const msg = {msg: "has left the room", name: user.name}
+            const msg = {msg: "has left the room", name: user.name, type: "notice"}
             socket.to(room.name).emit("message", msg)
         }
     }); 

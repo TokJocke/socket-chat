@@ -6,14 +6,17 @@ export default function RoomPanel(props) {
     
     const [roomName, setRoomName] = useState("")
     const [pw, setPw] = useState(undefined)
+    const [cantCreateMsg, setCantCreateMsg] = useState()
 
     function createRoom() {
+        setCantCreateMsg(undefined)
         props.socket.emit('createRoom', {name: roomName, pw: pw})
-      
-/*         props.socket.on('error', (errorMsg) => {
-            console.log(errorMsg)
-        }) */
-
+        props.socket.once('error', (errorMsg) => {
+            setCantCreateMsg(errorMsg)
+            setTimeout(() => {
+                setCantCreateMsg(undefined)
+            }, 5000);
+        })
     }
 
     function updateRoomName(event){
@@ -32,25 +35,16 @@ export default function RoomPanel(props) {
         }
     }, [pw])
 
-/*     useEffect(() => {
-        console.log("in effect: ", props.socket)
-        if(props.socket) {        
-            props.socket.on('error', (errorMsg) => {
-                console.log(errorMsg)
-            })     
-        }
-    }, [props.socket]) */
-
-
     return (
                                                     
         <div style={panelStyle}>
-            <h1>
+            <h1 style={{color: "white"}}>
                 Create Room
             </h1>
-            <input style={inputStyle}onChange={updateRoomName} placeholder="Room name..." /> 
+            <input style={inputStyle} onChange={updateRoomName} placeholder="Room name..." /> 
             <input style={inputStyle} onChange={updatePw} placeholder="Password..." /> 
             <button style={btnStyle} onClick={() => createRoom()}>Create</button>
+            <p style={{color: "red"}}>{cantCreateMsg}</p>
         </div>
     )
 }
@@ -59,8 +53,9 @@ const panelStyle = {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    marginBottom: "20px"
-}
+    marginBottom: "20px",
+/*     padding: "10px"
+ */}
 
 const inputStyle = {
     fontSize: "1.3em",
@@ -68,7 +63,9 @@ const inputStyle = {
 
 const btnStyle = {
     fontSize: "1.5em",
-    backgroundColor: "lightgreen",
-    color: "rgb(230, 230, 230)",
-    cursor: "pointer"
+    backgroundColor: "rgb(85, 150, 245)",
+    color: "white",
+    cursor: "pointer",
+    border: "none",
+    marginTop: "10px"
 }

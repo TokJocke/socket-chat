@@ -16,5 +16,5 @@ export default class Chat extends React.Component {
 const chatWindow = {
     height: "100%",
     width: "80%",
-    backgroundColor: "blue"
+    backgroundColor: "rgb(230, 230, 230)"
 }

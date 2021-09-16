@@ -13,9 +13,9 @@ export default function ChatInput(props) {
             return (
                 <div style={suggestionDiv}>
                     {
-                        jokeCategories.map((category) => {
+                        jokeCategories.map((category, i) => {
                             return (
-                                <p onClick={() => setValue("/Joke." + category)}> .{category} </p>
+                                <p key={i} onClick={() => setValue("/Joke." + category)}> .{category} </p>
                             )
                         })
                     }
@@ -100,19 +100,21 @@ const chatInputWrap = {
     display: "flex",
     width: "100%",
     height: "10%",
-    position: 'relative'
+    position: 'relative',
 }
 
 const inputStyle = {
     width: "90%",
-    backgroundColor: "rgb(230, 230, 230)"
+    backgroundColor: "rgb(230, 230, 230)",
+   // borderRadius: "10px",
 }
 
 const btnStyle = {
     width: "10%",
-    backgroundColor: "lightgreen",
+    backgroundColor: "rgb(85, 150, 245)",
     fontSize: "1.6em",
-    color: "rgb(230, 230, 230)"
+    color: "rgb(230, 230, 230)",
+   // borderRadius: "10px",
 }
 
 const suggestionDiv = {
@@ -122,7 +124,9 @@ const suggestionDiv = {
     bottom: '10vh',
     marginLeft: '10px',
     border: '1px solid black',
-    borderRadius: '10px',
+    borderRadius: '5px',
     padding: '5px',
-    backgroundColor: 'RGBA(220, 220, 220, 0.5)'
+    backgroundColor: 'rgba(85, 150, 245, 0.7)',
+    color: "white",
+    fontWeight: "bold"
 }

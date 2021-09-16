@@ -19,3 +19,12 @@ code {
 .noScrollBar::-webkit-scrollbar {
   display: none;
 }
+
+input:focus {
+  outline: none !important;
+}
+
+/* Typestyle */
+
+
+/* Nth child på borders */

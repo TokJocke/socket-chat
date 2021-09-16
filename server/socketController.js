@@ -34,16 +34,16 @@ export default async function socketController(io) {
           if(foundUser.user) {    
             if(incoming.type === "cmd") {
               if(incoming.msg.toLowerCase().includes("joke")) {
-                const msg = {msg: await makeJoke(incoming.msg), name: foundUser.user.name, type: incoming.type}
+                const msg = {msg: await makeJoke(incoming.msg), name: foundUser.user.name, type: incoming.type, id: socket.id}
                 io.to(foundUser.room.name).emit('message', msg)
               }
               else if(incoming.msg.toLowerCase().includes("bored")) {
-                const msg = {msg: await getBored(), name: foundUser.user.name, type: incoming.type}
+                const msg = {msg: await getBored(), name: foundUser.user.name, type: incoming.type, id: socket.id}
                 io.to(foundUser.room.name).emit('message', msg)
               }
             }
             else {
-              const msg = {msg: incoming.msg, name: foundUser.user.name, type: incoming.type}
+              const msg = {msg: incoming.msg, name: foundUser.user.name, type: incoming.type, id: socket.id}
               io.to(foundUser.room.name).emit('message', msg)
             }
           }
@@ -61,9 +61,9 @@ export default async function socketController(io) {
           }
           io.emit("rooms", rooms)
         }
-/*         else {  emit i else funkar inte, duplicerar meddelanden.
-          socket.emit("error", "feel för fan")
-        } */
+        else {  //emit i else funkar inte, duplicerar meddelanden.
+          socket.emit("error", "room name taken or empty")
+        }
       }) 
       /* Join */
       socket.on('join', (room) => {

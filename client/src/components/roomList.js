@@ -20,7 +20,7 @@ export default function RoomList(props) {
 
     function findUser(rooms, socket) {
         let foundUser
-        const findUser = rooms.forEach(index => {
+        rooms.forEach(index => {
           index.users.find((user) => {
             if(user.id === socket.id) {
               foundUser = {
@@ -36,21 +36,23 @@ export default function RoomList(props) {
     function renderRoomList() {
         let foundUser = findUser(roomsArr, props.socket)
         return (
-            <div style={listStyle}>  
+            <div className="noScrollBar" style={listStyle}>  
                             { 
                                 roomsArr.length?
                                     roomsArr.map((item, i) => {
                                         return (
                                             <div key={i}style={listItem} onClick={() => joinRoom(item) }> 
-                                                <p style={roomNameStyle}> {item.name} </p>
+                                                <div style={titleWrap}>
+                                                    <p style={roomNameStyle}> {item.name} </p> {/* Title */}
+                                                </div>
                                                 <div style={userList}>
-                                                    <p style={{...roomNameStyle, color: "rgb(230, 230, 230)"}}>users:</p> 
+                                                    <p style={{...userTitle, color: "rgb(230, 230, 230)"}}>users:</p> 
                                                     {   
                                                         item.users.length?
                                                             item.users.map((user) => {
                                                                 if(user.id === foundUser.user.id) {
                                                                     return (
-                                                                        <div style={userStatus}>
+                                                                        <div key={user.id} style={userStatus}>
                                                                             <p style={{...currentUser, ...userNameStyle}}>{user.name}</p>
                                                                         </div>
                                                                     )
@@ -58,7 +60,7 @@ export default function RoomList(props) {
                                                                 else {
                                                                     if(user.isWriting) {  
                                                                         return (
-                                                                            <div style={userStatus}> {/* Fixa loader */}
+                                                                            <div key={user.id} style={userStatus}> {/* Fixa loader */}
                                                                                 <p style={userNameStyle}>{user.name} </p> 
                                                                                 <Loader 
                                                                                     type="ThreeDots"
@@ -71,7 +73,7 @@ export default function RoomList(props) {
                                                                     }
                                                                     else 
                                                                         return (
-                                                                            <div style={userStatus}>
+                                                                            <div key={user.id} style={userStatus}>
                                                                                 <p style={userNameStyle}>{user.name}</p>
                                                                             </div>
                                                                         )
@@ -109,23 +111,32 @@ const listStyle = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    backgroundColor: 'darkgray'
+    overflow: "auto"
+
+    
 }
 
 const listItem = {
-    borderBottom: '3px solid white',
     cursor: 'pointer',
+    marginBottom: "10px"
 }
 
 const userList = {
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "rgb(53, 53, 53)",
+    display: "flex",
+    flexDirection: "column"
 }
 
 const roomNameStyle = {
     fontSize: "1.5em",
     fontWeight: "bold",
-    
+}
 
+const userTitle = {
+    fontSize: "1.5em",
+    fontWeight: "bold",
+    marginBlockStart: 0,
+    marginBlockEnd: 0
 }
 
 const currentUser = {
@@ -135,9 +146,8 @@ const currentUser = {
 const userStatus = {
     display: "flex",
     alignItems: "center",    
-/*     backgroundColor: "brown",
-    borderRadius: "25px", */
-    border: "1px solid white"
+    height: "4vh",
+    paddingLeft: "5px"
 }
 
 const userNameStyle = {
@@ -145,3 +155,9 @@ const userNameStyle = {
     color: "rgb(230, 230, 230)"
 }
 
+const titleWrap = {
+    backgroundColor: 'rgb(85, 150, 245)',
+    color: "white",
+    margin: "0",
+    display: "flex"
+}
