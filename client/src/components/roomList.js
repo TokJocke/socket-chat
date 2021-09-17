@@ -96,7 +96,6 @@ export default function RoomList(props) {
         if(props.socket) {        
             props.socket.on('rooms', (rooms) => {
                 setRooms(rooms) 
-                console.log(rooms, "iim in hererere")
             })     
         }
     }, [props.socket])
