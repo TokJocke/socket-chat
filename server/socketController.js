@@ -1,5 +1,5 @@
-import {createRoom, joinRoom, leaveRoom, roomCheck, findUser } from "./socketFunctions.js"
-import { makeJoke, makeReq, getBored } from "./apiFuncs.js";
+import {createRoom, joinRoom, leaveRoom, roomCheck, findUser, hiddenPwArray } from "./socketFunctions.js"
+import { makeJoke, getBored } from "./apiFuncs.js";
 
 
 
@@ -19,13 +19,13 @@ export default async function socketController(io) {
         }
         !rooms.length? createRoom(rooms, "General") : null
         joinRoom(rooms, "General", user, socket, io)
-        io.emit("rooms", rooms)
+        io.emit("rooms", hiddenPwArray(rooms))
       })  
       /* Is writing */
       socket.on('isWriting', (bool) => {
         const foundUser = findUser(rooms, socket)
         foundUser.user.isWriting = bool
-        io.emit("rooms", rooms)
+        io.emit("rooms", hiddenPwArray(rooms))
       })
 
       /* Send Message */
@@ -59,7 +59,7 @@ export default async function socketController(io) {
             joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
             roomCheck(rooms)
           }
-          io.emit("rooms", rooms)
+          io.emit("rooms", hiddenPwArray(rooms))
         }
         else {  //emit i else funkar inte, duplicerar meddelanden.
           socket.emit("error", "room name taken or empty")
@@ -71,7 +71,7 @@ export default async function socketController(io) {
         if(foundUser.user && foundUser.room.name !== room.name) {
           joinRoom(rooms, room.name, foundUser.user, socket, io, room.pw)
           roomCheck(rooms)
-          io.emit("rooms", rooms)  
+          io.emit("rooms", hiddenPwArray(rooms))
         }
       })
       /* Disconnect */
@@ -80,7 +80,7 @@ export default async function socketController(io) {
         if(foundUser) {
           leaveRoom(rooms, socket, foundUser)
           roomCheck(rooms)
-          io.emit("rooms", rooms)
+          io.emit("rooms", hiddenPwArray(rooms))
           console.log(socket.name, " Disconnected")
         }
       })

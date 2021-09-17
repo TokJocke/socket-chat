@@ -60,3 +60,17 @@ export function findUser(rooms, socket) {
     })
     return foundUser
 }
+
+export function hiddenPwArray(rooms) {
+    let clonedArr = JSON.parse(JSON.stringify(rooms)); 
+    clonedArr.forEach(room => {
+        if(room.password) {
+            room.password = true
+        }
+        else {
+            room.password = undefined
+        }
+    
+    });
+    return clonedArr
+}

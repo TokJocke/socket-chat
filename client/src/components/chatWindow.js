@@ -44,7 +44,7 @@ export default function ChatWindow(props) {
 
     useEffect(() => {
         if(ifBottom) {
-            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+            messagesEndRef.current?.scrollIntoView()
         }  
     }, [msg])
 
