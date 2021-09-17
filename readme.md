@@ -5,6 +5,8 @@ En app skapad med hjälp av React, nodejs och socketio.
 För att köra projektet så behöver du navigera in i respektive mapp och köra npm install i cmd. 
 </p>
 
+<p>Servern körs på port 3000.</p>
+
 <p>Vi har använt oss av två externa apier, vilka är, https://sv443.net/jokeapi/v2/ och https://www.boredapi.com/. Vi har parkodat hela applikationen. </p>
 
 <h1>Kravspecifikation</h1>
